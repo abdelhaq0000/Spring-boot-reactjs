@@ -1,0 +1,35 @@
+version: "3"
+services:
+  appDB:
+    container_name: appDB
+    image: mysql:latest
+    restart: always
+    networks:
+      - netAppll
+    environment:
+      - MYSQL_DATABASE=miniProject
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 3307:3306
+  my-web-app:
+    container_name: backApp
+    image: myspring:latest
+    ports:
+      - 9090:9090
+    environment:
+      MYSQL_HOST: appDB
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+    networks:
+      - netAppll
+    depends_on:
+      - appDB
+  my-react-app:
+    container_name: frontApp
+    image: myreact:latest
+    ports:
+      - 3000:3000
+networks:
+  netAppll:
+    name: netAppll
